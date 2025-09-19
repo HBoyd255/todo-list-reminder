@@ -11,6 +11,6 @@ The time is obtained from ntp.org.
 
 ## Relevant articles
 
-https://lastminuteengineers.com/esp32-ntp-server-date-time-tutorial/
-https://randomnerdtutorials.com/esp32-ntp-timezones-daylight-saving/
-https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
+https://lastminuteengineers.com/esp32-ntp-server-date-time-tutorial/  
+https://randomnerdtutorials.com/esp32-ntp-timezones-daylight-saving/  
+https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv  
