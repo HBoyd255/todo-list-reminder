@@ -19,7 +19,8 @@ const char* password = WIFI_PASSWORD;
 
 const char* ntpServer = "pool.ntp.org";
 
-volatile bool FlashLED = false;
+// Set LED on at boot.
+volatile bool FlashLED = true;
 
 void IRAM_ATTR turnOffLED() { FlashLED = false; }
 
