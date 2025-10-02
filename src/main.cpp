@@ -77,8 +77,8 @@ void loop() {
         }
 
         // At 12:00 PM every Wednesday and Thursday.
-        if ((timedata.tm_hour == 12 && timedata.tm_hour == 3) ||
-            (timedata.tm_hour == 12 && timedata.tm_hour == 4)) {
+        if ((timedata.tm_hour == 12 && timedata.tm_wday == 3) ||
+            (timedata.tm_hour == 12 && timedata.tm_wday == 4)) {
             FlashGreenLED = true;
         }
     }
@@ -86,17 +86,13 @@ void loop() {
     lastHour = timedata.tm_hour;
 
     // Create a boolean that will toggle on and off each seccond.
-    bool flashingRedCoefficient = (millis() >> 9) & 1;
-
-    // Create a boolean that will toggle on and off each seccond, out of phase
-    // with the Red LED.
-    bool flashingGreenCoefficient = !((millis() >> 9) & 1);
+    bool flashingCoefficient = (millis() >> 9) & 1;
 
     // If the global FlashRedLED boolean is true, flash the LED.
-    digitalWrite(LED_1, flashingRedCoefficient && FlashRedLED);
+    digitalWrite(LED_1, flashingCoefficient && FlashRedLED);
 
     // If the global FlashGreenLED boolean is true, flash the LED.
-    digitalWrite(LED_2, flashingGreenCoefficient && FlashGreenLED);
+    digitalWrite(LED_2, !flashingCoefficient && FlashGreenLED);
 
     delay(10);
 }
