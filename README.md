@@ -1,13 +1,11 @@
 # ToDo List Reminder
 
-A simple programme to remind me to check my ToDo list twice a day.
+A simple program to remind me to check my ToDo list twice a day.
 
 This is program runs on the
 [Simple ESP32 Notifier](https://github.com/HBoyd255/simple-esp32-notifier).
 
 The time is obtained from ntp.org.
-
-
 
 ## Relevant articles
 

@@ -20,9 +20,13 @@ const char* password = WIFI_PASSWORD;
 const char* ntpServer = "pool.ntp.org";
 
 // Set LED on at boot.
-volatile bool FlashLED = true;
+volatile bool FlashRedLED = true;
+volatile bool FlashGreenLED = false;
 
-void IRAM_ATTR turnOffLED() { FlashLED = false; }
+void IRAM_ATTR turnOffAllLEDs() {
+    FlashRedLED = false;
+    FlashGreenLED = false;
+}
 
 void setup() {
     Serial.begin(9600);
@@ -41,12 +45,15 @@ void setup() {
     pinMode(LED_1, OUTPUT);
     digitalWrite(LED_1, 0);
 
+    pinMode(LED_2, OUTPUT);
+    digitalWrite(LED_2, 0);
+
     pinMode(LED_3, OUTPUT);
     digitalWrite(LED_3, 0);
 
     pinMode(BUT_1, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(BUT_1), turnOffLED, RISING);
+    attachInterrupt(digitalPinToInterrupt(BUT_1), turnOffAllLEDs, RISING);
 }
 
 void loop() {
@@ -59,24 +66,37 @@ void loop() {
 
     // Hour Changed
     if (lastHour != timedata.tm_hour) {
-        // At 6:00 AM
+        // At 6:00 AM everyday.
         if (timedata.tm_hour == 6) {
-            FlashLED = true;
+            FlashRedLED = true;
         }
 
-        // At 10:00 PM
+        // At 10:00 PM everyday.
         if (timedata.tm_hour == 22) {
-            FlashLED = true;
+            FlashRedLED = true;
+        }
+
+        // At 12:00 PM every Wednesday and Thursday.
+        if ((timedata.tm_hour == 12 && timedata.tm_hour == 3) ||
+            (timedata.tm_hour == 12 && timedata.tm_hour == 4)) {
+            FlashGreenLED = true;
         }
     }
 
     lastHour = timedata.tm_hour;
 
     // Create a boolean that will toggle on and off each seccond.
-    bool flashingCoefficient = (millis() >> 9) & 1;
+    bool flashingRedCoefficient = (millis() >> 9) & 1;
 
-    // If the global FlashLED boolean is true, flash the LED.
-    digitalWrite(LED_1, flashingCoefficient && FlashLED);
+    // Create a boolean that will toggle on and off each seccond, out of phase
+    // with the Red LED.
+    bool flashingGreenCoefficient = !((millis() >> 9) & 1);
+
+    // If the global FlashRedLED boolean is true, flash the LED.
+    digitalWrite(LED_1, flashingRedCoefficient && FlashRedLED);
+
+    // If the global FlashGreenLED boolean is true, flash the LED.
+    digitalWrite(LED_2, flashingGreenCoefficient && FlashGreenLED);
 
     delay(10);
 }
